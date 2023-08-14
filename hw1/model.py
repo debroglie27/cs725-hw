@@ -1,16 +1,17 @@
 import numpy as np
 
+
 class LogisticRegression:
     def __init__(self):
         """
         Initialize `self.weights` properly. 
         Recall that for binary classification we only need 1 set of weights (hence `num_classes=1`).
-        We have given the default zero intialization with bias term (hence the `d+1`).
+        We have given the default zero initialization with bias term (hence the `d+1`).
         You are free to experiment with various other initializations including random initialization.
         Make sure to mention your initialization strategy in your report for this task.
         """
-        self.num_classes = 1 # single set of weights needed
-        self.d = 2 # input space is 2D. easier to visualize
+        self.num_classes = 1  # single set of weights needed
+        self.d = 2  # input space is 2D. easier to visualize
         self.weights = np.zeros((self.d+1, self.num_classes))
     
     def preprocess(self, input_x):
@@ -64,16 +65,17 @@ class LogisticRegression:
         """
         pass
 
+
 class LinearClassifier:
     def __init__(self):
         """
         Initialize `self.weights` properly. 
-        We have given the default zero intialization with bias term (hence the `d+1`).
+        We have given the default zero initialization with bias term (hence the `d+1`).
         You are free to experiment with various other initializations including random initialization.
         Make sure to mention your initialization strategy in your report for this task.
         """
-        self.num_classes = 3 # 3 classes
-        self.d = 4 # 4 dimensional features
+        self.num_classes = 3  # 3 classes
+        self.d = 4  # 4 dimensional features
         self.weights = np.zeros((self.d+1, self.num_classes))
     
     def preprocess(self, train_x):
