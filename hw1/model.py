@@ -131,4 +131,7 @@ class LinearClassifier:
         Returns: a NumPy array with shape (N,) 
         The returned array must be the list of predicted class labels for every input in `input_x`
         """
-        return input_x.dot(self.weights)
+        b = np.ones((input_x.shape[0], 1))
+        Input_X = np.hstack([input_x, b])
+
+        return Input_X.dot(self.weights)
