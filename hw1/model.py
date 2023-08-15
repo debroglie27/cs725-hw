@@ -99,7 +99,7 @@ class LinearClassifier:
         input_y -- NumPy array with shape (N,)
         Returns: a single scalar value corresponding to the loss.
         """
-        loss = 0.5*(np.power(input_x.dot(self.weights) - input_y, 2))
+        loss = np.sum(0.5*(np.power(input_x.dot(self.weights) - input_y, 2)))
         return loss
 
     def calculate_gradient(self, input_x, input_y):
