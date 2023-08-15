@@ -140,7 +140,21 @@ class LinearClassifier:
         Returns: a NumPy array with shape (N,) 
         The returned array must be the list of predicted class labels for every input in `input_x`
         """
+        def map_func(x):
+            if x < 0.5:
+                return 0
+            elif x < 1.5:
+                return 1
+            else:
+                return 2
+
         b = np.ones((input_x.shape[0], 1))
         Input_X = np.hstack([input_x, b])
 
-        return Input_X.dot(self.weights)
+        prediction = Input_X.dot(self.weights)
+
+        prediction_mapping = np.array(list(map(map_func, prediction)))
+
+        return prediction_mapping
+
+
