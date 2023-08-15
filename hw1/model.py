@@ -76,7 +76,9 @@ class LinearClassifier:
         """
         self.num_classes = 3  # 3 classes
         self.d = 4  # 4 dimensional features
-        self.weights = np.zeros((self.d+1, self.num_classes))
+        self.weights = np.zeros(self.d+1)
+
+        self.change = np.zeros((self.d+1, 1))
     
     def preprocess(self, train_x):
         """
@@ -118,7 +120,9 @@ class LinearClassifier:
         Returns: nothing
         The function should update `self.weights` with the help of `grad`, `learning_rate` and `momentum`
         """
-        pass
+        new_change = learning_rate * grad + momentum*self.change
+        self.weights -= new_change
+        self.change = new_change
 
     def get_prediction(self, input_x):
         """
@@ -127,4 +131,4 @@ class LinearClassifier:
         Returns: a NumPy array with shape (N,) 
         The returned array must be the list of predicted class labels for every input in `input_x`
         """
-        pass
+        return input_x.dot(self.weights)
