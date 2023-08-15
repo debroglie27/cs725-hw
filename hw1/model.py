@@ -110,7 +110,12 @@ class LinearClassifier:
         Returns: the gradient of loss function wrt weights.
         Ensure that gradient.shape == self.weights.shape.
         """
-        pass
+        b = np.ones((input_x.shape[0], 1))
+        Input_X = np.hstack([input_x, b])
+
+        gradient = (1/input_x.shape[0])*(Input_X.T.dot(Input_X.dot(self.weights) - input_y))
+
+        return gradient
 
     def update_weights(self, grad, learning_rate, momentum):
         """
