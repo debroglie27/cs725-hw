@@ -78,7 +78,7 @@ class LinearClassifier:
         self.d = 4  # 4 dimensional features
         self.weights = np.zeros(self.d+1)
 
-        self.change = np.zeros((self.d+1, 1))
+        self.change = np.zeros((self.d+1))
     
     def preprocess(self, train_x):
         """
@@ -99,7 +99,10 @@ class LinearClassifier:
         input_y -- NumPy array with shape (N,)
         Returns: a single scalar value corresponding to the loss.
         """
-        loss = np.sum(0.5*(np.power(input_x.dot(self.weights) - input_y, 2)))
+        b = np.ones((input_x.shape[0], 1))
+        Input_X = np.hstack([input_x, b])
+
+        loss = np.sum(0.5*(np.power(Input_X.dot(self.weights) - input_y, 2)))
         return loss
 
     def calculate_gradient(self, input_x, input_y):
