@@ -12,7 +12,9 @@ class LogisticRegression:
         """
         self.num_classes = 1  # single set of weights needed
         self.d = 2  # input space is 2D. easier to visualize
-        self.weights = np.zeros((self.d+1, self.num_classes))
+        self.weights = np.zeros((self.d+1,))
+
+        self.change = np.zeros((self.d + 1))
     
     @staticmethod
     def preprocess(input_x):
@@ -40,7 +42,9 @@ class LogisticRegression:
         input_y -- NumPy array with shape (N,)
         Returns: a single scalar value corresponding to the loss.
         """
-        pass
+        z = input_x.dot(self.weights)
+        yp = self.sigmoid(z)
+        return (-input_y * np.log(yp) - (1 - input_y) * np.log(1 - yp)).mean()
 
     def calculate_gradient(self, input_x, input_y):
         """
@@ -50,7 +54,12 @@ class LogisticRegression:
         Returns: the gradient of loss function wrt weights.
         Ensure that gradient.shape == self.weights.shape.
         """
-        pass
+        b = np.ones((input_x.shape[0], 1))
+        Input_X = np.hstack([input_x, b])
+
+        gradient = (1 / input_x.shape[0]) * (Input_X.T.dot(Input_X.dot(self.weights) - input_y))
+
+        return gradient
 
     def update_weights(self, grad, learning_rate, momentum):
         """
@@ -61,7 +70,9 @@ class LogisticRegression:
         Returns: nothing
         The function should update `self.weights` with the help of `grad`, `learning_rate` and `momentum`
         """
-        pass
+        new_change = learning_rate * grad + momentum * self.change
+        self.weights -= new_change
+        self.change = new_change
 
     def get_prediction(self, input_x):
         """
@@ -70,7 +81,20 @@ class LogisticRegression:
         Returns: a NumPy array with shape (N,) 
         The returned array must be the list of predicted class labels for every input in `input_x`
         """
-        pass
+        def map_func(x):
+            if x < 0.5:
+                return 0
+            else:
+                return 1
+
+        b = np.ones((input_x.shape[0], 1))
+        Input_X = np.hstack([input_x, b])
+
+        prediction = self.sigmoid(Input_X.dot(self.weights))
+
+        prediction_mapping = np.array(list(map(map_func, prediction)))
+
+        return prediction_mapping
 
 
 class LinearClassifier:
