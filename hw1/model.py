@@ -12,7 +12,7 @@ class LogisticRegression:
         """
         self.num_classes = 1  # single set of weights needed
         self.d = 2  # input space is 2D. easier to visualize
-        self.weights = np.zeros((self.d+1,))
+        self.weights = np.zeros(self.d+1)
 
         self.change = np.zeros((self.d + 1))
     
@@ -42,9 +42,14 @@ class LogisticRegression:
         input_y -- NumPy array with shape (N,)
         Returns: a single scalar value corresponding to the loss.
         """
-        z = input_x.dot(self.weights)
+        b = np.ones((input_x.shape[0], 1))
+        Input_X = np.hstack([input_x, b])
+
+        z = Input_X.dot(self.weights)
         yp = self.sigmoid(z)
-        return (-input_y * np.log(yp) - (1 - input_y) * np.log(1 - yp)).mean()
+
+        loss = (-input_y * np.log(yp) - (1 - input_y) * np.log(1 - yp)).mean()
+        return loss
 
     def calculate_gradient(self, input_x, input_y):
         """
