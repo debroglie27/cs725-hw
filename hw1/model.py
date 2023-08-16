@@ -26,11 +26,12 @@ class LogisticRegression:
 
         return input_x
 
-    def sigmoid(self, x):
+    @staticmethod
+    def sigmoid(x):
         """
         Implement a sigmoid function if you need it. Ignore otherwise.
         """
-        pass
+        return 1/(1+np.exp(-x))
 
     def calculate_loss(self, input_x, input_y):
         """
