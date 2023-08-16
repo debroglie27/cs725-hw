@@ -14,10 +14,16 @@ class LogisticRegression:
         self.d = 2  # input space is 2D. easier to visualize
         self.weights = np.zeros((self.d+1, self.num_classes))
     
-    def preprocess(self, input_x):
+    @staticmethod
+    def preprocess(input_x):
         """
         Preprocess the input any way you seem fit.
         """
+        # mean = np.mean(input_x, axis=0)
+        # std = np.std(input_x, axis=0)
+        #
+        # input_x = (input_x - mean) / std
+
         return input_x
 
     def sigmoid(self, x):
@@ -80,10 +86,16 @@ class LinearClassifier:
 
         self.change = np.zeros((self.d+1))
     
-    def preprocess(self, train_x):
+    @staticmethod
+    def preprocess(train_x):
         """
         Preprocess the input any way you seem fit.
         """
+        # mean = np.mean(train_x, axis=0)
+        # std = np.std(train_x, axis=0)
+        #
+        # train_x = (train_x - mean) / std
+
         return train_x
 
     def sigmoid(self, x):
@@ -156,5 +168,3 @@ class LinearClassifier:
         prediction_mapping = np.array(list(map(map_func, prediction)))
 
         return prediction_mapping
-
-
