@@ -1,6 +1,8 @@
 import numpy as np
 
 
+# Learning_Rate: 0.0001, Num_Epochs: 60, Momentum: 0.9
+# train_loss=0.67, valid_loss=0.68, valid_acc=0.8
 class LogisticRegression:
     def __init__(self):
         """
