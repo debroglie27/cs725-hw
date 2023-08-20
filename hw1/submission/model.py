@@ -102,6 +102,8 @@ class LogisticRegression:
         return prediction_mapping
 
 
+# Learning_Rate: 0.01, Num_Epochs: 850, Momentum: 0.9
+# train_loss=2.10, valid_loss=0.67, valid_acc=1.00
 class LinearClassifier:
     def __init__(self):
         """
