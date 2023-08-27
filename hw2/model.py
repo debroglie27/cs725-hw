@@ -53,7 +53,7 @@ class LitGenericClassifier(pl.LightningModule):
         """
         X, Y = batch
         loss = self.loss_func(self.model(X), Y)
-        acc = ...
+        acc = sum(Y == self.predict(X))/X.shape[0]
         self.log('train_loss', loss.item())
         self.log('train_acc', acc)
         return loss
@@ -85,7 +85,7 @@ class LitGenericClassifier(pl.LightningModule):
         """
         X, Y = batch
         loss = self.loss_func(self.model(X), Y)
-        acc = ...
+        acc = sum(Y == self.predict(X))/X.shape[0]
         self.log('valid_loss', loss)
         self.log('valid_acc', acc)
         return {
@@ -121,7 +121,7 @@ class LitGenericClassifier(pl.LightningModule):
         """
         X, Y = batch
         loss = self.loss_func(self.model(X), Y)
-        acc = ...
+        acc = sum(Y == self.predict(X))/X.shape[0]
         self.log('test_loss', loss)
         self.log('test_acc', acc)
         return {
@@ -147,8 +147,8 @@ class LitGenericClassifier(pl.LightningModule):
         `y_pred`: `torch.LongTensor` of size (B,) such that `y_pred[i]` for 0 <= i < B is the label
         predicted by the classifier for `x[i]`
         """
-        # FIX THIS
-        y_pred = self.model(x)
+        A = self.model(x)
+        y_pred = torch.argmax(torch.nn.functional.softmax(A, dim=1), dim=1)
         return y_pred
 
 
