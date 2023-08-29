@@ -8,6 +8,7 @@ import matplotlib.animation as animation
 
 from utils import parse_visualization_args, load_model, load_datamodule, get_model_name, gen_meshgrid
 
+
 # A simple PyTorch Lightning trainer with a custom visualization callback
 # Ideally, you should not need to modify this file ever
 
@@ -19,12 +20,13 @@ class VisualizationCallback(pl.Callback):
         self.train_losses = []
         self.train_accs = []
         self.litmodel_name = get_model_name(visualization_args)
-    
+
     def on_fit_start(self, trainer, pl_module):
         train_x = torch.Tensor(np.load('./data/simple/train_x.npy'))
         train_y = torch.LongTensor(np.load('./data/simple/train_y.npy'))
         self.train_x, self.train_y = self.xform((train_x, train_y))
-        self.x1, self.x2, self.eval_x = gen_meshgrid(self.visualization_args.grid_size, self.train_x.numpy(), self.visualization_args.epsilon)
+        self.x1, self.x2, self.eval_x = gen_meshgrid(self.visualization_args.grid_size, self.train_x.numpy(),
+                                                     self.visualization_args.epsilon)
         self.eval_x = torch.Tensor(self.eval_x)
 
     def on_train_epoch_end(self, trainer, pl_module):
@@ -46,13 +48,15 @@ class VisualizationCallback(pl.Callback):
             ax.set_ylim(self.x2.min(), self.x2.max())
             ax.set_xlabel('x1')
             ax.set_ylabel('x2')
-            ax.set_title(f'Epoch {i+1:04d}: Train loss = {self.train_losses[i]:.3f}. Train accuracy = {self.train_accs[i]*100:.2f}%.')
-            ax.contourf(self.x1, self.x2, pred_y, cmap=self.visualization_args.cmap, alpha=self.visualization_args.contourf_alpha)
+            ax.set_title(
+                f'Epoch {i + 1:04d}: Train loss = {self.train_losses[i]:.3f}. Train accuracy = {self.train_accs[i] * 100:.2f}%.')
+            ax.contourf(self.x1, self.x2, pred_y, cmap=self.visualization_args.cmap,
+                        alpha=self.visualization_args.contourf_alpha)
             ax.contour(self.x1, self.x2, pred_y, colors='k', linewidths=self.visualization_args.contour_linewidth)
             ax.scatter(self.train_x[:, 0], self.train_x[:, 1], c=self.train_y, cmap=self.visualization_args.cmap)
-        
+
         anim = animation.FuncAnimation(fig, draw_boundary, len(self.pred_eval_y), interval=50, blit=False)
-        
+
         try:
             writer = animation.PillowWriter(
                 fps=self.visualization_args.gif_fps,
@@ -73,6 +77,7 @@ class VisualizationCallback(pl.Callback):
             print(f'Unable to write GIF file. You may need `ffmpeg`\nError={repr(e)}')
             plt.show()
 
+
 def main():
     args = parse_visualization_args()
     args.model = 'simple'
@@ -88,7 +93,7 @@ def main():
     # Prepare the model
     litmodel = load_model(args.model)(args.learning_rate)
     litmodel_name = get_model_name(args)
-    
+
     datamodule = load_datamodule(args.dataset)(batch_size=args.batch_size)
 
     trainer = pl.Trainer(
@@ -99,6 +104,7 @@ def main():
         callbacks=[VisualizationCallback(args, litmodel.transform_input)]
     )
     trainer.fit(litmodel, datamodule)
+
 
 if __name__ == '__main__':
     main()
