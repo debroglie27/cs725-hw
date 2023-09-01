@@ -193,4 +193,4 @@ class LitDigitsClassifier(LitGenericClassifier):
         # choose an optimizer from `torch.optim.*`
         # use `self.lr` to set the learning rate
         # other parameters (e.g. momentum) may be hardcoded here
-        return torch.optim.SGD(self.model.parameters(), lr=self.lr, momentum=0.9)
+        return torch.optim.SGD(self.model.parameters(), lr=self.lr)
