@@ -156,9 +156,9 @@ class LitSimpleClassifier(LitGenericClassifier):
     def __init__(self, lr=0):
         super().__init__(lr=lr)
         self.model = nn.Sequential(
-            nn.Linear(2, 16),  # d = 2
+            nn.Linear(2, 12),  # d = 2
             nn.ReLU(),  # build your model here using `torch.nn.*` modules
-            nn.Linear(16, 4)  # num_classes = 4
+            nn.Linear(12, 4)  # num_classes = 4
         )
 
     @staticmethod
