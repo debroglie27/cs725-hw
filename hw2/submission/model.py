@@ -177,11 +177,11 @@ class LitDigitsClassifier(LitGenericClassifier):
     def __init__(self, lr=0):
         super().__init__(lr=lr)
         self.model = nn.Sequential(
-            nn.Linear(64, 32),  # d = 64
+            nn.Linear(64, 24),  # d = 64
             nn.ReLU(),  # build your model here using `torch.nn.*` modules
-            nn.Linear(32, 32),
+            nn.Linear(24, 24),
             nn.ReLU(),
-            nn.Linear(32, 10)   # num_classes = 10
+            nn.Linear(24, 10)   # num_classes = 10
         )
     
     @staticmethod
