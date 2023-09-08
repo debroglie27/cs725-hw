@@ -98,7 +98,7 @@ def visualise(data_points, labels):
 
 
 def net_f1score(predictions, true_labels):
-    """Calculate the multclass f1 score of the predictions.
+    """Calculate the multiclass f1 score of the predictions.
     For this, we calculate the f1-score for each class 
 
     Args:
@@ -110,7 +110,7 @@ def net_f1score(predictions, true_labels):
     """
 
     def precision(predictions, true_labels, label):
-        """Calculate the multclass precision of the predictions.
+        """Calculate the multiclass precision of the predictions.
         For this, we take the class with given label as the positive class and the rest as the negative class.
 
         Args:
@@ -125,7 +125,7 @@ def net_f1score(predictions, true_labels):
         """End of your code."""
 
     def recall(predictions, true_labels, label):
-        """Calculate the multclass recall of the predictions.
+        """Calculate the multiclass recall of the predictions.
         For this, we take the class with given label as the positive class and the rest as the negative class.
         Args:
             predictions (np.array): The predicted labels.
