@@ -59,14 +59,14 @@ class NaiveBayes:
         return priors, gaussian, bernoulli, laplace, exponential, multinomial
 
 
-def save_model(model, filename="model.pkl"):
+def save_model(my_model, filename="model.pkl"):
     """
 
     You are not required to modify this part of the code.
 
     """
-    file = open("model.pkl","wb")
-    pkl.dump(model,file)
+    file = open(filename, "wb")
+    pkl.dump(my_model, file)
     file.close()
 
 
@@ -77,9 +77,9 @@ def load_model(filename="model.pkl"):
 
     """
     file = open(filename, "rb")
-    model = pkl.load(file)
+    my_model = pkl.load(file)
     file.close()
-    return model
+    return my_model
 
 
 def visualise(data_points, labels):
@@ -109,49 +109,62 @@ def net_f1score(predictions, true_labels):
         float(list): The f1 score of the predictions for each class
     """
 
-    def precision(predictions, true_labels, label):
+    def precision(predicted_labels, actual_labels, class_label):
         """Calculate the multiclass precision of the predictions.
         For this, we take the class with given label as the positive class and the rest as the negative class.
 
         Args:
-            predictions (np.array): The predicted labels.
-            true_labels (np.array): The true labels.
-
+            predicted_labels (np.array): The predicted labels.
+            actual_labels (np.array): The true labels.
+            class_label (int): label value - 0, 1, 2
         Returns:
             float: The precision of the predictions.
         """
-        """Start of your code."""
-        
-        """End of your code."""
 
-    def recall(predictions, true_labels, label):
+        tp, fp = 0, 0
+        for predicted_label, actual_label in zip(predicted_labels, actual_labels):
+            if predicted_label == class_label and actual_label == class_label:
+                tp = tp + 1
+            if predicted_label == class_label and actual_label != class_label:
+                fp = fp + 1
+
+        return tp/(tp+fp)
+
+    def recall(predicted_labels, actual_labels, class_label):
         """Calculate the multiclass recall of the predictions.
         For this, we take the class with given label as the positive class and the rest as the negative class.
         Args:
-            predictions (np.array): The predicted labels.
-            true_labels (np.array): The true labels.
-
+            predicted_labels (np.array): The predicted labels.
+            actual_labels (np.array): The true labels.
+            class_label (int): label value - 0, 1, 2
         Returns:
             float: The recall of the predictions.
         """
-        """Start of your code."""
 
-        """End of your code."""
+        tp, fn = 0, 0
+        for predicted_label, actual_label in zip(predicted_labels, actual_labels):
+            if actual_label == class_label and predicted_label == class_label:
+                tp = tp + 1
+            if actual_label == class_label and predicted_label != class_label:
+                fn = fn + 1
 
-    def f1score(predictions, true_labels, label):
+        return tp / (tp + fn)
+
+    def f1score(predicted_labels, actual_labels, class_label):
         """Calculate the f1 score using its relation with precision and recall.
 
         Args:
-            predictions (np.array): The predicted labels.
-            true_labels (np.array): The true labels.
-
+            predicted_labels (np.array): The predicted labels.
+            actual_labels (np.array): The true labels.
+            class_label (int): label value - 0, 1, 2
         Returns:
             float: The f1 score of the predictions.
         """
 
-        """Start of your code."""
+        p = precision(predicted_labels, actual_labels, class_label)
+        r = recall(predicted_labels, actual_labels, class_label)
+        f1 = (2*p*r)/(p+r)
 
-        """End of your code."""
         return f1
 
     f1s = []
