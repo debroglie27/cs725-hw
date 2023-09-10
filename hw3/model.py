@@ -5,11 +5,19 @@ import pickle as pkl
 
 
 class NaiveBayes:
-    def fit(self, X, y):
+    def __init__(self):
+        self.priors = None
+        self.gaussian = None
+        self.bernoulli = None
+        self.laplace = None
+        self.exponential = None
+        self.multinomial = None
+
+    def fit(self, x, y):
 
         """Start of your code."""
         """
-        X : np.array of shape (n,10)
+        x : np.array of shape (n,10)
         y : np.array of shape (n,)
         Create a variable to store number of unique classes in the dataset.
         Assume Prior for each class to be ratio of number of data points in that class to total number of data points.
@@ -18,12 +26,14 @@ class NaiveBayes:
         You can create a separate function for fitting each distribution in its and call it here.
         """
 
+        self.priors, self.gaussian, self.bernoulli, self.laplace, self.exponential, self.multinomial = self.getParams(x, y)
+
         """End of your code."""
 
-    def predict(self, X):
+    def predict(self, x):
         """Start of your code."""
         """
-        X : np.array of shape (n,10)
+        x : np.array of shape (n,10)
 
         Calculate the posterior probability using the parameters of the distribution calculated in fit function.
         Take care of underflow errors suitably (Hint: Take log of probabilities)
@@ -31,10 +41,14 @@ class NaiveBayes:
         It is implied that prediction[i] is the class that maximizes posterior probability for ith data point in X.
         You can create a separate function for calculating posterior probability and call it here.
         """
+        predictions = []
+        for label in [0, 1, 2]:
+            px1 = np.sqrt(2 * np.pi * self.gaussian[label][2]) * np.exp(-0.5 * ((x.T[0] - self.gaussian[label][0]) / self.gaussian[label][2]) ** 2)
+            px2 = np.sqrt(2 * np.pi * self.gaussian[label][3]) * np.exp(-0.5 * ((x.T[1] - self.gaussian[label][1]) / self.gaussian[label][3]) ** 2)
 
-        """End of your code."""
+        return predictions
 
-    def getParams(self):
+    def getParams(self, x_train, y):
         """
         Return your calculated priors and parameters for all the classes in the form of dictionary that will be used for evaluation
         Please don't change the dictionary names
@@ -46,7 +60,7 @@ class NaiveBayes:
         exponential = {"0":[lambda_x7,lambda_x8],"1":[lambda_x7,lambda_x8],"2":[lambda_x7,lambda_x8]}
         multinomial = {"0":[[p0_x9,...,p4_x9],[p0_x10,...,p7_x10]],"1":[[p0_x9,...,p4_x9],[p0_x10,...,p7_x10]],"2":[[p0_x9,...,p4_x9],[p0_x10,...,p7_x10]]}
         """
-        priors = {}
+        priors = {"0": 0.3333, "1": 0.3333, "2": 0.3333}
         gaussian = {}
         bernoulli = {}
         laplace = {}
@@ -54,7 +68,29 @@ class NaiveBayes:
         multinomial = {}
 
         """Start your code"""
-        
+        for label in np.unique(y).astype(int):
+            mean_x1 = np.mean(x_train.T[0])
+            mean_x2 = np.mean(x_train.T[1])
+            var_x1 = np.var(x_train.T[0])
+            var_x2 = np.var(x_train.T[1])
+
+            p_x3 = np.mean(x_train.T[2])
+            p_x4 = np.mean(x_train.T[3])
+
+            mu_x5 = np.median(x_train.T[4])
+            mu_x6 = np.median(x_train.T[5])
+            b_x5 = np.mean(x_train.T[4] - mu_x5)
+            b_x6 = np.mean(x_train.T[5] - mu_x6)
+
+            lambda_x7 = 1 / np.mean(x_train.T[6])
+            lambda_x8 = 1 / np.mean(x_train.T[7])
+
+            gaussian[label] = [mean_x1, mean_x2, var_x1, var_x2]
+            bernoulli[label] = [p_x3, p_x4]
+            laplace[label] = [mu_x5, mu_x6, b_x5, b_x6]
+            exponential[label] = [lambda_x7, lambda_x8]
+            multinomial[label] = [np.bincount(train_dataset.T[8].astype(int)) / len(train_dataset),
+                                  np.bincount(train_dataset.T[9].astype(int)) / len(train_dataset)]
         """End your code"""
         return priors, gaussian, bernoulli, laplace, exponential, multinomial
 
