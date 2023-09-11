@@ -46,6 +46,9 @@ class NaiveBayes:
             px1 = np.sqrt(2 * np.pi * self.gaussian[label][2]) * np.exp(-0.5 * ((x.T[0] - self.gaussian[label][0]) / self.gaussian[label][2]) ** 2)
             px2 = np.sqrt(2 * np.pi * self.gaussian[label][3]) * np.exp(-0.5 * ((x.T[1] - self.gaussian[label][1]) / self.gaussian[label][3]) ** 2)
 
+            px3 = np.power(self.bernoulli[label][0], x.T[2]) * np.power(1 - self.bernoulli[label][0], 1 - x.T[2])
+            px4 = np.power(self.bernoulli[label][1], x.T[3]) * np.power(1 - self.bernoulli[label][1], 1 - x.T[3])
+
         return predictions
 
     def getParams(self, x_train, y):
