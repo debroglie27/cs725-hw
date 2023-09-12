@@ -248,8 +248,8 @@ if __name__ == "__main__":
     """
 
     # Load the data
-    train_dataset = pd.read_csv('../data/train_dataset.csv', index_col=0).to_numpy()
-    validation_dataset = pd.read_csv('../data/validation_dataset.csv', index_col=0).to_numpy()
+    train_dataset = pd.read_csv('./data/train_dataset.csv', index_col=0).to_numpy()
+    validation_dataset = pd.read_csv('./data/validation_dataset.csv', index_col=0).to_numpy()
 
     # Extract the data
     train_datapoints = train_dataset[:, :-1]
