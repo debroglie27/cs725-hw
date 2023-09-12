@@ -42,17 +42,17 @@ class NaiveBayes:
         """
         predictions = []
         for label in [0, 1, 2]:
-            px1 = np.log((1/np.sqrt(2 * np.pi * self.gaussian[label][2])) * np.exp(-0.5 * ((x.T[0] - self.gaussian[label][0]) / self.gaussian[label][2]) ** 2))
-            px2 = np.log((1/np.sqrt(2 * np.pi * self.gaussian[label][3])) * np.exp(-0.5 * ((x.T[1] - self.gaussian[label][1]) / self.gaussian[label][3]) ** 2))
+            px1 = -0.5 * np.log(2 * np.pi * self.gaussian[label][2]) - 0.5 * (((x.T[0] - self.gaussian[label][0])**2) / self.gaussian[label][2])
+            px2 = -0.5 * np.log(2 * np.pi * self.gaussian[label][3]) - 0.5 * (((x.T[1] - self.gaussian[label][1])**2) / self.gaussian[label][3])
 
-            px3 = np.log(np.power(self.bernoulli[label][0], x.T[2]) * np.power(1 - self.bernoulli[label][0], 1 - x.T[2]))
-            px4 = np.log(np.power(self.bernoulli[label][1], x.T[3]) * np.power(1 - self.bernoulli[label][1], 1 - x.T[3]))
+            px3 = x.T[2]*np.log(self.bernoulli[label][0]) + (1 - x.T[2])*np.log(1 - self.bernoulli[label][0])
+            px4 = x.T[3]*np.log(self.bernoulli[label][1]) + (1 - x.T[3])*np.log(1 - self.bernoulli[label][1])
 
-            px5 = np.log((1 / (2 * self.laplace[label][2]))) - ((np.absolute(x.T[4] - self.laplace[label][0])) / self.laplace[label][2])
-            px6 = np.log((1 / (2 * self.laplace[label][3]))) - ((np.absolute(x.T[5] - self.laplace[label][1])) / self.laplace[label][3])
+            px5 = -np.log(2 * self.laplace[label][2]) - ((np.absolute(x.T[4] - self.laplace[label][0])) / self.laplace[label][2])
+            px6 = -np.log(2 * self.laplace[label][3]) - ((np.absolute(x.T[5] - self.laplace[label][1])) / self.laplace[label][3])
 
-            px7 = np.log(self.exponential[label][0] * np.exp(-1 * self.exponential[label][0] * x.T[6]))
-            px8 = np.log(self.exponential[label][1] * np.exp(-1 * self.exponential[label][1] * x.T[7]))
+            px7 = np.log(self.exponential[label][0]) - self.exponential[label][0] * x.T[6]
+            px8 = np.log(self.exponential[label][1]) - self.exponential[label][1] * x.T[7]
 
             px9 = np.log(np.array(self.multinomial[label][0])[x.T[8].astype(int)])
             px10 = np.log(np.array(self.multinomial[label][1])[x.T[9].astype(int)])
@@ -248,8 +248,8 @@ if __name__ == "__main__":
     """
 
     # Load the data
-    train_dataset = pd.read_csv('./data/train_dataset.csv', index_col=0).to_numpy()
-    validation_dataset = pd.read_csv('./data/validation_dataset.csv', index_col=0).to_numpy()
+    train_dataset = pd.read_csv('../data/train_dataset.csv', index_col=0).to_numpy()
+    validation_dataset = pd.read_csv('../data/validation_dataset.csv', index_col=0).to_numpy()
 
     # Extract the data
     train_datapoints = train_dataset[:, :-1]
