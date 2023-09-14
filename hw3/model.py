@@ -6,12 +6,12 @@ import pickle as pkl
 
 class NaiveBayes:
     def __init__(self):
-        self.priors = None
-        self.gaussian = None
-        self.bernoulli = None
-        self.laplace = None
-        self.exponential = None
-        self.multinomial = None
+        self.priors = {}
+        self.gaussian = {}
+        self.bernoulli = {}
+        self.laplace = {}
+        self.exponential = {}
+        self.multinomial = {}
 
     def fit(self, x, y):
 
@@ -25,14 +25,6 @@ class NaiveBayes:
         Store the parameters of the distribution in suitable data structure, for example you could create a class for each distribution and store the parameters in the class object.
         You can create a separate function for fitting each distribution in its and call it here.
         """
-
-        # self.priors, self.gaussian, self.bernoulli, self.laplace, self.exponential, self.multinomial = self.getParams(x, y)
-        self.priors = {}
-        self.gaussian = {}
-        self.bernoulli = {}
-        self.laplace = {}
-        self.exponential = {}
-        self.multinomial = {}
 
         """Start your code"""
         for label in np.unique(y).astype(int):
