@@ -3,8 +3,8 @@ from utils import load_model
 
 def evaluate_model(dataset_name, model_name):
     print(f'Loading validation split of "{dataset_name}" dataset')
-    valid_x = np.load(f'./data/{dataset_name}/val_x.npy')
-    valid_y = np.load(f'./data/{dataset_name}/val_y.npy')
+    valid_x = np.load(f'./data/{dataset_name}/tst_x.npy')
+    valid_y = np.load(f'./data/{dataset_name}/tst_y.npy')
 
     print(f'Loading "{model_name}" model')
     model = load_model(model_name)()
